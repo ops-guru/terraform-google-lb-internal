@@ -72,7 +72,7 @@ resource "google_compute_region_backend_service" "default" {
     for_each = var.backends
     content {
       group           = lookup(backend.value, "group", null)
-      description     = lookup(backend.value, "description", null),
+      description     = lookup(backend.value, "description", null)
       balancing_mode  = lookup(backend.value, "balancing_mode", null)
     }
   }
