@@ -50,7 +50,7 @@ resource "google_compute_global_forwarding_rule" "default" {
   project               = var.project
   target                = google_compute_region_target_http_proxy.default[count.index].id
   port_range            = "80"
-  load_balancing_scheme = "INTERNAL"
+  load_balancing_scheme = "INTERNAL_SELF_MANAGED"
   ip_address            = "0.0.0.0"
   network               = data.google_compute_network.network.self_link
 }
@@ -87,7 +87,8 @@ resource "google_compute_region_backend_service" "default" {
       balancing_mode  = lookup(backend.value, "balancing_mode", null)
     }
   }
-  health_checks = [var.health_check["type"] == "tcp" ? google_compute_health_check.tcp[0].self_link : google_compute_health_check.http[0].self_link]
+  health_checks           = [var.health_check["type"] == "tcp" ? google_compute_health_check.tcp[0].self_link : google_compute_health_check.http[0].self_link]
+  load_balancing_scheme   = "INTERNAL_MANAGED"
 }
 
 resource "google_compute_health_check" "tcp" {
