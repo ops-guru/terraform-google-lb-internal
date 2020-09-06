@@ -38,6 +38,7 @@ resource "google_compute_region_target_http_proxy" "default" {
 resource "google_compute_region_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
+  region          = var.region
   name            = "${var.name}-url-map"
   default_service = google_compute_region_backend_service.default.self_link
 }
