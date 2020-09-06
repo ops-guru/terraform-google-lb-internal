@@ -52,7 +52,7 @@ resource "google_compute_global_forwarding_rule" "default" {
   port_range            = "80"
   load_balancing_scheme = "INTERNAL_SELF_MANAGED"
   ip_address            = "0.0.0.0"
-  network               = data.google_compute_subnetwork.network.self_link
+  network               = data.google_compute_network.network.self_link
 }
 
 resource "google_compute_forwarding_rule" "default" {
