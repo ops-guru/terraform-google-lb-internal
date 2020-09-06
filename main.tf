@@ -44,9 +44,10 @@ resource "google_compute_region_url_map" "default" {
 }
 
 resource "google_compute_global_forwarding_rule" "default" {
+  count                 = var.http_forward ? 1 : 0
   provider              = google-beta
   name                  = "${var.name}-forwarding-rule"
-  target                = google_compute_region_target_http_proxy.default.id
+  target                = google_compute_region_target_http_proxy.default[count.index].id
   port_range            = "80"
   load_balancing_scheme = "INTERNAL_SELF_MANAGED"
   ip_address            = "0.0.0.0"
