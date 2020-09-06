@@ -143,3 +143,10 @@ variable "create_url_map" {
   type        = bool
   default     = true
 }
+
+variable "backend_protocol" {
+  description = ""
+  type        = string
+  default     = "HTTP"
+}
+
