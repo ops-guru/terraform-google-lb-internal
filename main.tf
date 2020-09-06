@@ -50,10 +50,10 @@ resource "google_compute_forwarding_rule" "default" {
   region                = var.region
   network               = data.google_compute_network.network.self_link
   subnetwork            = data.google_compute_subnetwork.network.self_link
-  target                = google_compute_region_target_http_proxy.default[count.index].id
+  target                = var.http_forward ? google_compute_region_target_http_proxy.default[count.index].id : null
   allow_global_access   = var.global_access
   load_balancing_scheme = "INTERNAL"
-  backend_service       = google_compute_region_backend_service.default.self_link
+  backend_service       = var.http_forward ? null : google_compute_region_backend_service.default.self_link
   ip_address            = var.ip_address
   ip_protocol           = var.ip_protocol
   ports                 = var.ports
