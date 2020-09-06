@@ -50,7 +50,7 @@ resource "google_compute_global_forwarding_rule" "default" {
   project               = var.project
   target                = google_compute_region_target_http_proxy.default[count.index].id
   port_range            = "80"
-  load_balancing_scheme = "INTERNAL_SELF_MANAGED"
+  load_balancing_scheme = "INTERNAL"
   ip_address            = "0.0.0.0"
   network               = data.google_compute_network.network.self_link
 }
