@@ -32,7 +32,7 @@ resource "google_compute_region_target_http_proxy" "default" {
   project = var.project
   region  = var.region
   name    = "${var.name}-internal-http"
-  url_map = google_compute_region_url_map.default.self_link
+  url_map = google_compute_region_url_map.default[count.index].self_link
 }
 
 resource "google_compute_region_url_map" "default" {
