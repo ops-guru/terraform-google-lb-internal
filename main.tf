@@ -27,7 +27,23 @@ data "google_compute_subnetwork" "network" {
   region  = var.region
 }
 
+resource "google_compute_region_target_http_proxy" "default" {
+  count   = var.http_forward ? 1 : 0
+  project = var.project
+  region  = var.region
+  name    = "${var.name}-internal-http"
+  url_map = google_compute_region_url_map.default.self_link
+}
+
+resource "google_compute_region_url_map" "default" {
+  project         = var.project
+  count           = var.create_url_map ? 1 : 0
+  name            = "${var.name}-url-map"
+  default_service = google_compute_region_backend_service.default.self_link
+}
+
 resource "google_compute_forwarding_rule" "default" {
+  count                 = var.http_forward ? 0 : 1
   project               = var.project
   name                  = var.name
   region                = var.region

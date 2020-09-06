@@ -132,3 +132,14 @@ variable "service_label" {
   type        = string
 }
 
+variable "http_forward" {
+  default     = false
+  type        = bool
+  description = ""
+}
+
+variable "create_url_map" {
+  description = ""
+  type        = bool
+  default     = true
+}
