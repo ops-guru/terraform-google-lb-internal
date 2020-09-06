@@ -44,12 +44,13 @@ resource "google_compute_region_url_map" "default" {
 }
 
 resource "google_compute_forwarding_rule" "default" {
+  count                 = var.http_forward ? 1 : 0
   project               = var.project
   name                  = var.name
   region                = var.region
   network               = data.google_compute_network.network.self_link
   subnetwork            = data.google_compute_subnetwork.network.self_link
-  target                = google_compute_region_target_http_proxy.default.id
+  target                = google_compute_region_target_http_proxy.default[0].id
   allow_global_access   = var.global_access
   load_balancing_scheme = "INTERNAL"
   backend_service       = google_compute_region_backend_service.default[0].self_link
