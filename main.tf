@@ -19,7 +19,6 @@
 data "google_compute_network" "network" {
   name    = var.network
   project = var.network_project == "" ? var.project : var.network_project
-  region  = var.region
 }
 
 data "google_compute_subnetwork" "network" {
@@ -49,7 +48,7 @@ resource "google_compute_forwarding_rule" "default" {
   project               = var.project
   name                  = var.name
   region                = var.region
-  network               = data.google_compute_network.network.self_link
+  network               = var.http_forward ? null : data.google_compute_network.network.self_link
   subnetwork            = data.google_compute_subnetwork.network.self_link
   target                = var.http_forward ? google_compute_region_target_http_proxy.default[count.index].id : null
   allow_global_access   = var.global_access
