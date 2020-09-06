@@ -39,29 +39,17 @@ resource "google_compute_region_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   region          = var.region
-  name            = "${var.name}-url-map"
+  name            = "${var.name}-internal-lb"
   default_service = google_compute_region_backend_service.default.self_link
 }
 
-resource "google_compute_global_forwarding_rule" "default" {
-  count                 = var.http_forward ? 1 : 0
-  provider              = google-beta
-  name                  = "${var.name}-forwarding-rule"
-  project               = var.project
-  target                = google_compute_region_target_http_proxy.default[count.index].id
-  port_range            = "80"
-  load_balancing_scheme = "INTERNAL_SELF_MANAGED"
-  ip_address            = "0.0.0.0"
-  network               = data.google_compute_network.network.self_link
-}
-
 resource "google_compute_forwarding_rule" "default" {
-  count                 = var.http_forward ? 0 : 1
   project               = var.project
   name                  = var.name
   region                = var.region
   network               = data.google_compute_network.network.self_link
   subnetwork            = data.google_compute_subnetwork.network.self_link
+  target                = google_compute_region_target_http_proxy.default[count.index].id
   allow_global_access   = var.global_access
   load_balancing_scheme = "INTERNAL"
   backend_service       = google_compute_region_backend_service.default.self_link
@@ -84,12 +72,9 @@ resource "google_compute_region_backend_service" "default" {
     content {
       group           = lookup(backend.value, "group", null)
       description     = lookup(backend.value, "description", null)
-      balancing_mode  = lookup(backend.value, "balancing_mode", null)
-      capacity_scaler = lookup(backend.value, "capacity_scaler", null)
     }
   }
   health_checks           = [var.health_check["type"] == "tcp" ? google_compute_health_check.tcp[0].self_link : google_compute_health_check.http[0].self_link]
-  load_balancing_scheme   = "INTERNAL_MANAGED"
 }
 
 resource "google_compute_health_check" "tcp" {

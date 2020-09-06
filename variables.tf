@@ -53,9 +53,7 @@ variable "backends" {
   description = "List of backends, should be a map of key-value pairs for each backend, must have the 'group' key."
   type        = list(object({
     group         = string,
-    description     = string,
-    balancing_mode  = string,
-    capacity_scaler = number
+    description     = string
   }))
 }
 
