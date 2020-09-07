@@ -66,7 +66,6 @@ resource "google_compute_region_backend_service" "default" {
   name             = var.health_check["type"] == "tcp" ? "${var.name}-with-tcp-hc" : "${var.name}-with-http-hc"
   region           = var.region
   protocol         = var.backend_protocol
-  load_balancing_scheme = "INTERNAL_MANAGED"
   timeout_sec      = 10
   session_affinity = var.session_affinity
   dynamic "backend" {
