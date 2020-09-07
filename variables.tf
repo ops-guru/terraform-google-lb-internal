@@ -80,6 +80,12 @@ variable "port_range" {
   default     = null
 }
 
+variable "port_name" {
+  description = "A named port on a backend instance group"
+  type = string
+  default = null
+}
+
 variable "health_check" {
   description = "Health check to determine whether instances are responsive and able to do work"
   type = object({

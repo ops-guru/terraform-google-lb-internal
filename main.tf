@@ -69,6 +69,7 @@ resource "google_compute_region_backend_service" "default" {
   protocol         = var.backend_protocol
   timeout_sec      = 10
   session_affinity = var.session_affinity
+  port_name        = var.port_name
   dynamic "backend" {
     for_each = var.backends
     content {
