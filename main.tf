@@ -77,10 +77,10 @@ resource "google_compute_region_backend_service" "default" {
       balancing_mode  = lookup(backend.value, "balancing_mode", null)
     }
   }
-  health_checks           = [var.health_check["type"] == "tcp" ? google_compute_health_check.tcp[0].self_link : google_compute_health_check.http[0].self_link]
+  health_checks = [var.health_check["type"] == "tcp" ? google_compute_region_health_check.tcp[0].self_link : google_compute_region_health_check.http[0].self_link]
 }
 
-resource "google_compute_health_check" "tcp" {
+resource "google_compute_region_health_check" "tcp" {
   count   = var.health_check["type"] == "tcp" ? 1 : 0
   project = var.project
   name    = "${var.name}-hc-tcp"
@@ -99,7 +99,7 @@ resource "google_compute_health_check" "tcp" {
   }
 }
 
-resource "google_compute_health_check" "http" {
+resource "google_compute_region_health_check" "http" {
   count   = var.health_check["type"] == "http" ? 1 : 0
   project = var.project
   name    = "${var.name}-hc-http"
