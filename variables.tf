@@ -74,6 +74,12 @@ variable "all_ports" {
   default     = null
 }
 
+variable "port_range" {
+  description = "CSV values of ports"
+  type        = string
+  default     = null
+}
+
 variable "health_check" {
   description = "Health check to determine whether instances are responsive and able to do work"
   type = object({

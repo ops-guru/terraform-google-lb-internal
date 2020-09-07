@@ -55,7 +55,8 @@ resource "google_compute_forwarding_rule" "default" {
   load_balancing_scheme = "INTERNAL_MANAGED"
   backend_service       = var.http_forward ? null : google_compute_region_backend_service.default.self_link
   ip_address            = var.ip_address
-  ip_protocol           = var.http_forward ? null : var.ip_protocol
+  ip_protocol           = var.ip_protocol
+  port_range            = var.port_range
   ports                 = var.ports
   all_ports             = var.all_ports
   service_label         = var.service_label
