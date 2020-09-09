@@ -166,3 +166,8 @@ variable "backend_protocol" {
   default     = "HTTP"
 }
 
+variable "ssl_certificate" {
+  description = "self link to google self managed certificate"
+  type        = list(string)
+  default     = []
+}

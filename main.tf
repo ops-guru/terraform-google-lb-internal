@@ -27,6 +27,15 @@ data "google_compute_subnetwork" "network" {
   region  = var.region
 }
 
+resource "google_compute_region_target_https_proxy" "default" {
+  count            = length(var.ssl_certificate) ? 1 : 0
+  project          = var.project
+  region           = var.region
+  name             = "${var.name}-internal-https"
+  url_map          = google_compute_region_url_map.default[count.index].self_link
+  ssl_certificates = var.ssl_certificate
+}
+
 resource "google_compute_region_target_http_proxy" "default" {
   count   = var.http_forward ? 1 : 0
   project = var.project
